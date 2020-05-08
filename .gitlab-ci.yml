@@ -1,0 +1,36 @@
+# https://hub.docker.com/r/library/node/tags/
+image: node:latest
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+#AWS access keys stored as secret variables 
+variables:
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID 
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+#This declares the pipeline stages  
+stages:
+  - build
+  - test
+  - deploy
+cache:
+  paths:
+  - node_modules/
+build:
+  stage: build
+  script:
+    - npm install
+    - npm run-script build
+test:
+  stage: test
+  script:
+    - echo "Running react test suite......"
+deploy:
+  image: "python:latest"  # We use python because there is a well-working AWS Sdk
+  stage: deploy
+  artifacts:
+    paths:
+      - build
+  before_script:
+    - pip install awscli # Install the SDK
+  script:
+    - aws s3 sync build s3://$S3_BUCKET_NAME/
+  
