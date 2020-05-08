@@ -12,9 +12,15 @@ Enviando seu build do React para um bucket do S3
 ## 1 - Crie um bucket no S3
 Para configurar o S3, acesse o console de gerenciamento do S3, crie um novo *bucket*, digite o nome (por exemplo, seudominio.com.br) e a região. No final, deixe as configurações padrão.
 
+<img src="https://user-images.githubusercontent.com/729786/81438285-e390ad00-9142-11ea-83fe-2e39472335b8.png" width="500" height="160">
+
 Depois disso, defina permissões para o acesso público do seu novo *bucket*. Dessa forma, você torna os arquivos do site acessíveis aos usuários pelo navegador.
 
+<img src="https://user-images.githubusercontent.com/729786/81438333-fc995e00-9142-11ea-8c8c-771d0d7d0011.jpg" width="500" height="260">
+
 Agora vá para a guia *Properties* e selecione "*Static website hosting*". Marque a caixa *"Use this bucket to host a website"* e digite o caminho da página raiz (**index.html** por padrão) no campo *"Index Document"*. Além disso, preencha as informações necessárias no campo *"Error Document"*, se não tiver página de erro pronta, coloque o **index.html** novamente.
+
+<img src="https://user-images.githubusercontent.com/729786/81438393-1470e200-9143-11ea-999f-522dd5470c60.png" width="550" height="300">
 
 Agora coloque as permissões ao seu ***bucket S3*** para tornar seu site visível e acessível aos usuários. Vá para a guia *Permissions* e clique em *Bucket policy*. Insira o seguinte snippet de código no editor que aparece:
 ```
@@ -74,13 +80,13 @@ Por isso não vamos poder rodar o package da aws com **NodeJS**, más sim carreg
 deploy:
 	image: "python:latest" # Usamos python porque ele trabalha com a biblioteca AWS Sdk
 	stage: deploy
-		artifacts:
-			paths:
-				- build
-		before_script:
-			- pip install awscli # instalando a SDK
-		script:
-			- aws s3 sync build s3://$S3_BUCKET_NAME/ # enviamos os arquivos da pasta build para o bucket no s3 
+	artifacts:
+		paths:
+			- build
+	before_script:
+		- pip install awscli # instalando a SDK
+	script:
+		- aws s3 sync build s3://$S3_BUCKET_NAME/ # enviamos os arquivos da pasta build para o bucket no s3 
 ```
 > *Faça o upload desse projeto no seu repositório do GitLab*
 
