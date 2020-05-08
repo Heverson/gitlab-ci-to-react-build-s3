@@ -1,5 +1,6 @@
-# Gitlab-CI deploy React build AWS S3
+# Gitlab-CI to React build AWS S3
 Enviando seu build do React para um bucket do S3
+
 
 # Passo a Passo
 
@@ -30,7 +31,7 @@ Agora coloque as permissões ao seu ***bucket S3*** para tornar seu site visíve
     ]
 }
 ```
-## 2 - Crie um usuário IAM que permite o upload para o bucket S3
+## 2 - Crie um usuário IAM que permite o upload para o bucket S3 🗳
 
 Nesse estágio, você deve criar um usuário do IAM para acessar e fazer upload de dados para seu **bucket**. Para fazer isso, vá para o console de gerenciamento do **IAM** e  clique em "Adicionar usuário" para criar uma nova política com o nome que você escolheu.
 
@@ -52,4 +53,35 @@ Agora você precisa iniciar o processo de implantação do seu projeto no *bucke
  - S3_BUCKET_NAME
 
 Depois disso, você precisa informar ao GitLab como seu site deve ser implantado no AWS S3. Isso pode ser feito adicionando o arquivo **.gitlab-ci.yml** ao diretório raiz do seu aplicativo. Simplificando, o *GitLab Runner* executa os cenários descritos neste arquivo.
+No exemplo deixei
 
+ - build
+ - test
+ - deploy (Vamos focar nesse *stage*)
+
+## Uma observação importante &#128588;
+
+Execulte no projeto o comando para gerar o build
+```yarn build ```
+
+Tentei integrar a criação do build do react no .gitlab-ci.yml, mas estava gerando alguns erros 🐛, caso deseje fazer um pull request fique a vontado 😇! 
+
+Muitos tutoriais usavam NodeJS para rodar um package chamado **aws-cli**, más a biblioteca da AWS com NodeJS está descontinuada.
+
+Por isso não vamos poder rodar o package da aws com **NodeJS**, más sim carregando uma imagem do **Python**.
+
+```
+deploy:
+	image: "python:latest" # Usamos python porque ele trabalha com a biblioteca AWS Sdk
+	stage: deploy
+		artifacts:
+			paths:
+				- build
+		before_script:
+			- pip install awscli # instalando a SDK
+		script:
+			- aws s3 sync build s3://$S3_BUCKET_NAME/ # enviamos os arquivos da pasta build para o bucket no s3 
+```
+> *Faça o upload desse projeto no seu repositório do GitLab*
+
+Tendo o projeto no seu repositório no GitLab é só fazer o seu *commit*.
