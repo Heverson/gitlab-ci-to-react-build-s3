@@ -8,10 +8,12 @@ Enviando seu build do React para um bucket do S3 📥
 
 # 👣 Passo a Passo
 
-<a  href="#1---crie-um-bucket-no-s3">1. Crie um bucket no S3</a>
-<a  href="#2---crie-um-usuário-iam-que-permite-o-upload-para-o-bucket-s3-">2. Crie um usuário IAM que permite o upload para o bucket S3</a>
-<a  href="#3---defina-a-configuração-no-ci-do-gitlab">3. Defina a configuração no CI do GitLab</a>
-<a  href="#uma-observação-importante-">4. Rode o código e &#128591;</a>
+<ul>
+<li><a  href="#1---crie-um-bucket-no-s3">1. Crie um bucket no S3</a></li>
+<li><a  href="#2---crie-um-usuário-iam-que-permite-o-upload-para-o-bucket-s3-">2. Crie um usuário IAM que permite o upload para o bucket S3</a></li>
+<li><a  href="#3---defina-a-configuração-no-ci-do-gitlab">3. Defina a configuração no CI do GitLab</a></li>
+<li><a  href="#uma-observação-importante-">4. Rode o código e &#128591;</a></li>
+</ul>
 
 ## 1 - Crie um bucket no S3
 
